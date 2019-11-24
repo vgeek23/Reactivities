@@ -8,13 +8,14 @@ interface IProps {
   activity: IActivity;
   createActivity:(activity:IActivity)=>void;
   editActivity:(activity:IActivity)=>void;
+  submitting:boolean;
 }
 export const ActivityForm: React.FC<IProps> = ({
   setEditMode,
   activity: initialFormState,
   createActivity,
-  editActivity
-
+  editActivity,
+  submitting
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -37,15 +38,15 @@ export const ActivityForm: React.FC<IProps> = ({
     setActivity({ ...activity, [name]: value });
   };
   const handleSubmit=()=>{
-      console.log(activity);
+    console.log(activity);
       if(activity.id.length===0){
         var newActivity = {
           ...activity,
           id:uuid()
         }
-        createActivity(newActivity);
+        createActivity(newActivity);        
       }else{
-        editActivity(activity);
+        editActivity(activity);        
       }
   }
   return (
@@ -89,8 +90,8 @@ export const ActivityForm: React.FC<IProps> = ({
           placeholder="Venue"
           value={activity.vennue}
         />
-        <Button floated="right" positive type="submit" content="Submit" />
-        <Button
+        <Button loading={submitting} floated="right" positive type="submit" content="Submit" />
+        <Button          
           onClick={() => setEditMode(false)}
           floated="right"
           type="button"
